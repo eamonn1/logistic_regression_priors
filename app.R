@@ -45,7 +45,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                     direction = "bottom"
                 ),
                 
-                h2("Common prior probability density functions for Bayesian logistic regression coefficients"),
+                h2("Visualising prior probability density functions commonly used for Bayesian logistic regression coefficients"),
                 
                 h4("A recommended prior for the coefficients is a Student-t distribution (bell-shaped but
                 with fatter tails than a normal distribution) with 3 degrees of freedom, 
