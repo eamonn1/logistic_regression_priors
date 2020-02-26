@@ -46,7 +46,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                 This prior roughly expresses an expectation that most values will be between -10 and +10. 
                 However, a change from -5 to 0 corresponds to a change on a probability scale of .01 to .50. Situations 
                 where a shift in input x corresponds to the probability of outcome y changing from 0.01 to 0.99 are rarely encountered [2].
-                Here we can plot the Normal, Cauchy and Student-t distributions.'
+                Here we plot the Normal, Cauchy and Student-t distributions.
               "), 
                 
                 h3("  "), 
@@ -260,61 +260,7 @@ server <- shinyServer(function(input, output   ) {
         x_values <- seq(x1,x2, length.out = 999)
         siz <- 1.
         
-        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # if (is.na(t2a)| is.na(t3a)) {
-        # 
-        # 
-        # data.frame(x_values) %>%
-        #     ggplot(aes(x_values) ) +   
-        #     stat_function(fun = dnorm,   args=list(mean=m1        ,sd=s1, log = FALSE), aes(colour = "a"),   size=siz) + 
-        #     stat_function(fun = dnorm,   args=list(mean=m2        ,sd=s2, log = FALSE), aes(colour = "b"),   size=siz) +  
-        #   #  stat_function(fun = dnorm,   args=list(mean=m3        ,sd=s3, log = FALSE), aes(colour = "cc"),  size=siz) + 
-        #    stat_function(fun = dcauchy, args=list(location = cm1, scale = cs1),        aes(colour = "d"),   size=siz) + 
-        #     stat_function(fun = dcauchy, args=list(location = cm2, scale = cs2),        aes(colour = "e"),   size=siz) + 
-        #    stat_function(fun = dcauchy, args=list(location = cm3, scale = cs3),         aes(colour = "f"),  size=siz) + 
-        #     stat_function(fun = dst,     args=list(nu=t1a,mu=t1b     ,sigma=t1c),        aes(colour = "g"),  size=siz) + 
-        #    #stat_function(fun = dst,     args=list(nu=t2a,mu=t2b     ,sigma=t2c),        aes(colour = "h"),  size=siz) + 
-        #  #  stat_function(fun = dst,     args=list(nu=t3a,mu=t3b     ,sigma=t3c),        aes(colour = "j"),  size=siz) + 
-        #  
-        #     scale_colour_manual("", values = c(input$col1, input$col2, input$col3, 
-        #                                        input$col4, input$col5, input$col6,
-        #                                        input$col7, input$col8, input$col9))  +
-        #     labs(title=paste0(c("Note probabilites", prob,"map to log odds: -5,-4,-3,-2,-1 and 0 for a distribution centered on 0 log odds"), collapse=", "), 
-        #          x = "log odds",
-        #          y = "",
-        #          #subtitle =paste0(c("Note probabilites", prob," are equivalent to log odds: -4,-2, 0 ,2, 4 "), collapse=", "),
-        #          caption = "") +
-        #     guides(fill=FALSE) +
-        #     theme_bw() +
-        #     #theme(legend.justification=c(1,0), legend.position=c(.96,.6)) +
-        #     scale_x_continuous("log odds", breaks=xs, labels=xs, limits=c(x1,x2)) +
-        #     theme(legend.position="none") +
-        #     theme(#panel.background=element_blank(),
-        #         # axis.text.y=element_blank(),
-        #         # axis.ticks.y=element_blank(),
-        #         # https://stackoverflow.com/questions/46482846/ggplot2-x-axis-extreme-right-tick-label-clipped-after-insetting-legend
-        #         # stop axis being clipped
-        #         plot.title=element_text(size = 18), plot.margin = unit(c(5.5,12,5.5,5.5), "pt"),
-        #         legend.text=element_text(size=14),
-        #         legend.title=element_text(size=14),
-        #         legend.position="none",
-        #         axis.text.x  = element_text(size=15),
-        #         axis.text.y  = element_text(size=15),
-        #         axis.line.x = element_line(color="black"),
-        #         axis.line.y = element_line(color="black"),
-        #         plot.caption=element_text(hjust = 0, size = 7),
-        #         strip.text.x = element_text(size = 16, colour = "black", angle = 0),
-        #         axis.title.y = element_text(size = rel(1.5), angle = 90),
-        #         axis.title.x = element_text(size = rel(1.5), angle = 0),
-        #         panel.grid.major.x = element_line(color = "grey80", linetype="dotted", size = 1),
-        #         panel.grid.major.y = element_line(color = "grey80", linetype="dotted", size = 1),
-        #         strip.background = element_rect(colour = "black", fill = "#ececf0"),
-        #         panel.background = element_rect(fill = '#ececf0', colour = '#ececf0'),
-        #         plot.background = element_rect(fill = '#ececf0', colour = '#ececf0')
-        #     )
-        # } else {
-        #     
-            
+        
             
             data.frame(x_values) %>%
                 ggplot(aes(x_values) ) +   
@@ -365,10 +311,7 @@ server <- shinyServer(function(input, output   ) {
                     plot.background = element_rect(fill = '#ececf0', colour = '#ececf0')
                 )
             
-            
-       # }
-
-        
+ 
        
     })
    
