@@ -47,12 +47,17 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                 
                 h2("Common prior probability density functions for Bayesian logistic regression coefficients"),
                 
-                h4("A recommended prior for the intercept and slope is a Student-t distribution (bell-shaped but
-                with fatter tails than a normal distribution) with 3 degrees of freedom, a mean of 0, and scale of 2.5 (coloured brown below) [1]. 
+                h4("A recommended prior for the coefficients is a Student-t distribution (bell-shaped but
+                with fatter tails than a normal distribution) with 3 degrees of freedom, 
+                a mean of 0, and scale of 2.5 (coloured violet below) [1]. 
                 This prior roughly expresses an expectation that most values will be between -10 and +10. 
                 However, a change from -5 to 0 corresponds to a change on a probability scale of .01 to .50. Situations 
                 where a shift in input x corresponds to the probability of outcome y changing from 0.01 to 0.99 are rarely encountered [2].
-                Here we plot the Normal, Cauchy and Student-t distributions.
+                Here we plot the Normal, Cauchy and Student-t distributions. Student's t-distribution and the Cauchy distribution 
+                are identical when the t-distribution degrees of freedom is equal to one and the t-distribution SD
+                and Cauchy scale are identical. 
+                The Student-t converges 
+                to the normal distribution as the degrees of freedom go to infinity.
               "), 
                 
                 h3("  "), 
@@ -202,6 +207,22 @@ LOGISTIC AND OTHER REGRESSION MODELS"),
                                       tags$a(href = "https://statdist.ksmzn.com/", "[3] Nice app"),
                                       div(p(" ")),
                                      
+                                  tags$a(href = "https://en.wikipedia.org/wiki/Normal_distribution/", "[4] Normal distribution"),
+                                  div(p(" ")),
+                                  tags$a(href = " https://en.wikipedia.org/wiki/Cauchy_distribution", "[5] Cauchy distribution"),
+                                  div(p(" ")),
+                                  tags$a(href = "https://en.wikipedia.org/wiki/Student%27s_t-distribution", "[6] Student t distribution"),
+                                  div(p(" ")),
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                 
+                                  
+                                  
                                   )
                     
                     
