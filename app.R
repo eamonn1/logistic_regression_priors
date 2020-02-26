@@ -19,7 +19,7 @@ fig.height3 <- 775
 p1 <- function(x) {formatC(x, format="f", digits=1)}
 p2 <- function(x) {formatC(x, format="f", digits=2)}
 options(width=140)
-set.seed(123456) # reproducible
+set.seed(874) # reproducible
 
 is.even <- function(x){ x %% 2 == 0 } # function to id. odd maybe useful
  
@@ -27,7 +27,13 @@ xwidth <- 50
 xwidth2 <- 4
 
 cola <- c("red", "pink", "green","blue","black","yellow","brown","maroon","purple")
- 
+cola <- colours()
+cola <- c("pink1", "violet", "mediumpurple1", "slateblue1", "purple", "purple3",
+                  "turquoise2", "skyblue", "steelblue", "blue2", "navyblue",
+                  "orange", "tomato", "coral2", "palevioletred", "violetred", "red2",
+                  "springgreen2", "yellowgreen", "palegreen4",
+                  "wheat2", "tan", "tan2", "tan3", "brown",
+                  "grey70", "grey50", "grey30")
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/packages/shinythemes/versions/1.1.2 
                 # paper
@@ -86,7 +92,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                               splitLayout(
                                                   textInput("m1", div(h5("Mean")), value="0", width=100),
                                                   textInput("s1", div(h5("SD")),value="1", width=100),
-                                                  selectInput("col1", div(h5("Colour")),  (cola)[1], width=120 )
+                                                  selectInput("col1", div(h5("Colour")),  sample(cola), width=120 )
                                               )
                                           )
                                       ),
@@ -96,7 +102,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                               splitLayout(
                                                   textInput("m2", div(h5("Mean")), value=NA, width=100),
                                                   textInput("s2", div(h5("SD")),value=NA, width=100),
-                                                  selectInput("col3", div(h5("Colour")),  (cola)[2], width=120 )
+                                                  selectInput("col2", div(h5("Colour")),  sample(cola), width=120 )
                                               )
                                           )
                                       ),
@@ -107,7 +113,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                               splitLayout(
                                                   textInput("m3", div(h5("Mean")), value=NA, width=100),
                                                   textInput("s3", div(h5("SD")),value=NA, width=100),
-                                                  selectInput("col3", div(h5("Colour")),  (cola)[3], width=120 )
+                                                  selectInput("col3", div(h5("Colour")),  sample(cola), width=120 )
                                               )
                                           )
                                       ),
@@ -118,7 +124,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                               splitLayout(
                                                   textInput("cm1", div(h5("Location")), value="0", width=100),
                                                   textInput("cs1", div(h5("Scale")),value="1", width=100),
-                                                  selectInput("col4", div(h5("Colour")),  (cola)[4], width=120 )
+                                                  selectInput("col4", div(h5("Colour")),  sample(cola), width=120 )
                                               )
                                           )
                                       ),
@@ -128,7 +134,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                               splitLayout(
                                                   textInput("cm2", div(h5("Location")), value="0", width=100),
                                                   textInput("cs2", div(h5("Scale")),value="2.5", width=100),
-                                                  selectInput("col5", div(h5("Colour")),  (cola)[5], width=120 )
+                                                  selectInput("col5", div(h5("Colour")),  sample(cola), width=120 )
                                               )
                                           )
                                       ),
@@ -139,7 +145,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                               splitLayout(
                                                   textInput("cm3", div(h5("Location")), value=NA, width=100),
                                                   textInput("cs3", div(h5("Scale")),value=NA, width=100),
-                                                  selectInput("col6", div(h5("Colour")),  (cola)[6], width=120 )
+                                                  selectInput("col6", div(h5("Colour")),  sample(cola), width=120 )
                                               )
                                           )
                                       ),
@@ -152,7 +158,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                               textInput("t1a", div(h5("df")), value="3", width=100),
                                               textInput("t1b", div(h5("Location")), value="0", width=100),
                                               textInput("t1c", div(h5("Scale")),value="2.5", width=100),
-                                              selectInput("col7", div(h5("Colour")),  (cola)[7], width=120 )
+                                              selectInput("col7", div(h5("Colour")),  sample(cola), width=120 )
                                           )
                                       )
                                   ),
@@ -163,7 +169,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                               textInput("t2a", div(h5("df")), value=NA, width=100),
                                               textInput("t2b", div(h5("Location")), value=NA, width=100),
                                               textInput("t2c", div(h5("Scale")),value=NA, width=100),
-                                              selectInput("col8", div(h5("Colour")),  (cola)[8], width=120 )
+                                              selectInput("col8", div(h5("Colour")),  sample(cola), width=120 )
                                           )
                                       )
                                   ),
@@ -175,13 +181,13 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                               textInput("t3a", div(h5("df")), value=NA, width=100),
                                               textInput("t3b", div(h5("Location")), value=NA, width=100),
                                               textInput("t3c", div(h5("Scale")),value=NA, width=100),
-                                              selectInput("col9", div(h5("Colour")),  (cola)[9], width=120 )
+                                              selectInput("col9", div(h5("Colour")),  sample(cola), width=120 )
                                           )
                                       )
                                   ),
                                   
                                   actionButton(inputId='ab1', label="R code",   icon = icon("th"), 
-                                               onclick ="window.open('https://raw.githubusercontent.com/eamonn2014/responder-non-responder-fallacy-in-RCTs/master/app.R', '_blank')"),    
+                                               onclick ="window.open('https://raw.githubusercontent.com/eamonn2014/logistic_regression_priors/master/app.R', '_blank')"),    
                                   #actionButton("resample", "Simulate a new sample"),
                                   br(), # br(),
                        
