@@ -306,7 +306,7 @@ server <- shinyServer(function(input, output   ) {
                                                    input$col7, input$col8, input$col9))  +
                 labs(title=paste0(c("Note probabilites", prob,"map to log odds: -5,-4,-3,-2,-1 and 0 for a distribution centered on 0 log odds"), collapse=", "), 
                      x = "log odds",
-                     y = "",
+                     y = "Prior degree of belief",
                      #subtitle =paste0(c("Note probabilites", prob," are equivalent to log odds: -4,-2, 0 ,2, 4 "), collapse=", "),
                      caption = "") +
                 guides(fill=FALSE) +
