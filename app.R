@@ -54,7 +54,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                 However, a change from -5 to 0 corresponds to a change on a probability scale of .01 to .50. Situations 
                 where a shift in input x corresponds to the probability of outcome y changing from 0.01 to 0.99 are rarely encountered [2].
                 Here we plot the Normal, Cauchy and Student-t distributions. Student's t-distribution and the Cauchy distribution 
-                are identical when the t-distribution degrees of freedom is equal to one and the t-distribution SD
+                are identical when the t-distribution degrees of freedom is equal to one and the t-distribution scale
                 and Cauchy scale are identical. Try it and see.
                 The Student-t converges 
                 to the normal distribution as the degrees of freedom go to infinity. Set the normal SD and Student-t distribution scale
