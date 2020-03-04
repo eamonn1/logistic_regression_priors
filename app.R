@@ -281,6 +281,13 @@ LOGISTIC AND OTHER REGRESSION MODELS"),
                                            div(plotOutput("plot", width=fig.width3, height=fig.height3)),
                                            h4("Figure 1 Probability density functions on the log odds scale"),
                               h4(htmlOutput("textWithNumber3",) ) ,
+                              
+                              h4("To help understand the mixture of normals, wipe any Cauchy and Student-t entries. Enter ~N(1, 1), we shift this distribution
+                                 so that the curves are not on top of one another. In the normal mixture section enter 1.95 and 0.025 for the first normal parameters.
+                                 Enter anything plausible for the second normal parameters. Now enter a weight of 1 so that the second mixture is ignored. Look at the comparison of the two curves."),  
+                              
+                              
+                              
                              # h4(htmlOutput("textWithNumber4",) ) ,
                     )
                     
