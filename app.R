@@ -1,6 +1,7 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Rshiny ideas from on https://gallery.shinyapps.io/multi_regression/
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+rm(list=ls())
 library(ggplot2) 
 library(shiny) 
 require(LearnBayes)
@@ -19,7 +20,7 @@ fig.height3 <- 775
 p1 <- function(x) {formatC(x, format="f", digits=1)}
 p2 <- function(x) {formatC(x, format="f", digits=2)}
 options(width=140)
-set.seed(874) # reproducible
+set.seed(87774) # reproducible
 
 is.even <- function(x){ x %% 2 == 0 } # function to id. odd maybe useful
  
@@ -58,7 +59,8 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                 and Cauchy scale are identical. Try it and see.
                 The Student-t converges 
                 to the normal distribution as the degrees of freedom go to infinity. Set the normal SD and Student-t distribution scale
-              to the same value and increase the Student-t distribution degrees of freedom to see this in action."), 
+              to the same value and increase the Student-t distribution degrees of freedom to see this in action. A mixture of two normals can
+                   also be specified. The default here is a prior distribution that is skeptical against large log odds values and symmetrical around log odds of 0."), 
                 
                 h3("  "), 
                 # shinyUI(pageWithSidebar(
@@ -92,6 +94,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                                   min=-20, max=20, step=1, value=c(-10,10), ticks=FALSE),
                                       ##
                                       #div(h5("Enter Normal mean and standard deviation")),
+                                      h4("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"),
                                       fluidRow(
                                           box(width = 13, title =  "Normal mean and standard deviation", 
                                               splitLayout(
@@ -122,6 +125,51 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                               )
                                           )
                                       ),
+                                      
+                                      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                      h4("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"),
+                                      h3("Mixture of two normal distributes"),
+                                      h4("The default prior here favours small effects. It is a 1:1 mixture of two normal distributes 
+                                      each with mean 0. 
+                                      The SD of the first distribution is chosen so that p(theta > log odds of 1) = 0.1, 
+                                      and the SD of the second distribution is chosen so that p(theta > log odds of 0.25) = 0.05"),
+                                      
+                                      h4("SD#1, p(theta > log odds) = y"),
+                                      fluidRow(
+                                        box(width = 13, #title =  " ", 
+                                            splitLayout(
+                                              textInput("x11", div(h5("theta > log odds")), value="1", width=100),
+                                              textInput("y11", div(h5("p(theta > log odds)")),value="0.1", width=100)
+                                              #selectInput("col4", div(h5("Colour")),  sample(cola), width=120 )
+                                            )
+                                        )
+                                      ),
+                                      
+                                      h4("SD#2, p(theta > log odds) = y"),
+                                      fluidRow(
+                                        box(width = 13,  #title = "SD#2, p(μ > x) = y", 
+                                            splitLayout(
+                                              textInput("x22", div(h5("theta > log odds")), value=0.25, width=100),
+                                              textInput("y22", div(h5("p(theta > log odds)")),value=0.05, width=100)
+                                              #selectInput("col2", div(h5("Colour")),  sample(cola), width=120 )
+                                            )
+                                        )
+                                      ),
+                                      
+                                      h4("Specify weight, e.g. 0.5 is a 1:1 mixture"),
+                                      fluidRow(
+                                        box(width = 13, #title = "Specify weight , e.g.  0.5 is a 1:1 mixture", 
+                                            splitLayout(
+                                              textInput("w", div(h5("weight")), value=.5, width=100),
+                                             # textInput("s99", div(h5("SD")),value=NA, width=100),
+                                             selectInput("col10", div(h5("Colour")),  sample(cola), width=120 )
+                                            )
+                                        )
+                                      ),
+                                      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                      
+                                      h4("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"),
+                                      
                                       
                                       #########################################################################
                                       fluidRow(
@@ -155,8 +203,8 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                           )
                                       ),
                                       
-                                      #########################################################################
-                                  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                  #########################################################################
+                                  h4("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"),
                                   fluidRow(
                                       box(width = 13, title = "t distribution df, location and scale", 
                                           splitLayout(
@@ -190,7 +238,7 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                           )
                                       )
                                   ),
-                                  
+                                  h4("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"),
                                   actionButton(inputId='ab1', label="R code",   icon = icon("th"), 
                                                onclick ="window.open('https://raw.githubusercontent.com/eamonn2014/logistic_regression_priors/master/app.R', '_blank')"),    
                                   #actionButton("resample", "Simulate a new sample"),
@@ -247,9 +295,24 @@ server <- shinyServer(function(input, output   ) {
     # --------------------------------------------------------------------------
     # ---------------------------------------------------------------------------
     # --------------------------------------------------------------------------
+  # This is where a new sample is instigated 
+  random.sample <- reactive({
+    
+    foo <- input$resample
+    
+    col10 <- input$col10
+    
+    return(list( col10=col10))#, prio=prio
  
+  })
+  
+  
     output$plot <- renderPlot({  
  
+      sample <- random.sample()
+      col10 <- sample$col10
+      
+      
         m1 <- as.numeric(input$m1 )
         s1 <- as.numeric(input$s1)
         m2 <- as.numeric(input$m2)
@@ -273,7 +336,14 @@ server <- shinyServer(function(input, output   ) {
         t3c <- as.numeric(input$t3c )
          
      
-      
+        x11 <- as.numeric(input$x11)
+        x22 <- as.numeric(input$x22)
+        y11 <- as.numeric(input$y11)
+        y22 <- as.numeric(input$y22)
+        wt <-  as.numeric(input$w )
+        
+        
+  
         
         x1 <- input$range[1]   
         x2 <- input$range[2]
@@ -287,8 +357,14 @@ server <- shinyServer(function(input, output   ) {
         x_values <- seq(x1,x2, length.out = 999)
         siz <- 1.
         
-        
-            
+        sd1 <- x11    / qnorm(1 - y11)
+        sd2 <- x22    / qnorm(1 - y22)
+       
+       # pdensity <- function(a= x_values, b=sd1  , d=sd2, w=wt) {w * dnorm(a, 0, b) + (1 - w) * dnorm(a, 0, d)}
+                         
+       # z <- wt * dnorm(x_values, 0, sd1) + (1 - wt) * dnorm(x_values, 0, sd2)
+        #z <- data.frame(z)  
+                                                      
             data.frame(x_values) %>%
                 ggplot(aes(x_values) ) +   
                 stat_function(fun = dnorm,   args=list(mean=m1        ,sd=s1, log = FALSE), aes(colour = "a"),   size=siz) + 
@@ -300,10 +376,15 @@ server <- shinyServer(function(input, output   ) {
                 stat_function(fun = dst,     args=list(nu=t1a,mu=t1b     ,sigma=t1c),        aes(colour = "g"),  size=siz) + 
                 stat_function(fun = dst,     args=list(nu=t2a,mu=t2b     ,sigma=t2c),        aes(colour = "h"),  size=siz) + 
                 stat_function(fun = dst,     args=list(nu=t3a,mu=t3b     ,sigma=t3c),        aes(colour = "j"),  size=siz) + 
-                
+                stat_function(fun = function(x_values)  {wt * dnorm(x_values, 0, sd1) + (1 - wt) * dnorm(x_values, 0, sd2)} ,   
+                                                                                             colour =  col10,  size=siz) +  
+              
+             # stat_function(fun = pdensity ,   args=list( a= x_values, b=sd1  , d=sd2, w=wt), aes(colour =  "x"),  size=siz) +  
+              
                 scale_colour_manual("", values = c(input$col1, input$col2, input$col3, 
                                                    input$col4, input$col5, input$col6,
-                                                   input$col7, input$col8, input$col9))  +
+                                                   input$col7, input$col8, input$col9, 
+                                                    col10))  +
                 labs(title=paste0(c("Note probabilites", prob,"map to log odds: -5,-4,-3,-2,-1 and 0 for a distribution centered on 0 log odds"), collapse=", "), 
                      x = "log odds",
                      y = "Prior degree of belief",
