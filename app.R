@@ -16,9 +16,11 @@ fig.height <- 550
 fig.width2 <- 1375  
 fig.height2 <- 730
 fig.width3 <- 1375
-fig.height3 <- 775
+fig.height3 <- 700
+p0 <- function(x) {formatC(x, format="f", digits=0)}
 p1 <- function(x) {formatC(x, format="f", digits=1)}
 p2 <- function(x) {formatC(x, format="f", digits=2)}
+p3 <- function(x) {formatC(x, format="f", digits=3)}
 options(width=140)
 set.seed(87774) # reproducible
 
@@ -132,7 +134,8 @@ ui <- fluidPage(theme = shinytheme("journal"), #https://www.rdocumentation.org/p
                                       h4("The default prior here favours small effects. It is a 1:1 mixture of two normal distributes 
                                       each with mean 0. 
                                       The SD of the first distribution is chosen so that p(theta > log odds of 1) = 0.1, 
-                                      and the SD of the second distribution is chosen so that p(theta > log odds of 0.25) = 0.05"),
+                                      and the SD of the second distribution is chosen so that p(theta > log odds of 0.25) = 0.05. 
+                                         This is a 1:1 mixture of zero mean normals with SD=0.780 and 0.152 respectively."),
                                       
                                       h4("SD#1, p(theta > log odds) = y"),
                                       fluidRow(
@@ -262,13 +265,8 @@ LOGISTIC AND OTHER REGRESSION MODELS"),
                                   tags$a(href = "https://en.wikipedia.org/wiki/Student%27s_t-distribution", "[6] Student t distribution"),
                                   div(p(" ")),
                                   
-                                  
-                                  
-                                  
-                                  
-                                  
-                                  
-                                 
+                                  tags$a(href = "http://hbiostat.org/doc/bayes/whybayes.pdf", "[7] Harrell, mixtures"),
+                                  div(p(" ")),
                                   
                                   
                                   )
@@ -281,8 +279,9 @@ LOGISTIC AND OTHER REGRESSION MODELS"),
                               
                                             h4(" "), 
                                            div(plotOutput("plot", width=fig.width3, height=fig.height3)),
-                                           h4("Figure 1 Probability density functions on the log odds scale")#,
-                                  
+                                           h4("Figure 1 Probability density functions on the log odds scale"),
+                              h4(htmlOutput("textWithNumber3",) ) ,
+                             # h4(htmlOutput("textWithNumber4",) ) ,
                     )
                     
                 ) #
@@ -424,6 +423,76 @@ server <- shinyServer(function(input, output   ) {
     })
    
   
+    output$textWithNumber3 <- renderText({ 
+      
+      x11 <- as.numeric(input$x11)
+      x22 <- as.numeric(input$x22)
+      y11 <- as.numeric(input$y11)
+      y22 <- as.numeric(input$y22)
+      wt <-  as.numeric(input$w )
+    
+      
+      sd1 <- x11    / qnorm(1 - y11)
+      sd2 <- x22    / qnorm(1 - y22)
+      
+      HTML(paste0("If specified the mixture of two normal distributes is a ",  
+                  tags$span(style="color:red", p0(wt*100) ),
+                  " : ",
+                  tags$span(style="color:red", p0((1-wt)*100)) ,
+                  " mixture of zero mean normals with SD " 
+                  , tags$span(style="color:red", p3(sd1)) ,
+                  " and "
+                  , tags$span(style="color:red", p3(sd2)) ,
+                  " respectively. The SD of the first distribution is chosen so that theta > log odds = ",  
+                  tags$span(style="color:red", p2(x11) ),
+                  " has probability p(theta > log odds) = ",
+                  tags$span(style="color:red", p2(y11)) ,
+                  " and the SD of the second distribution is chosen so that theta > log odds = " 
+                  , tags$span(style="color:red",  p2(x22)) ,
+                  " has probability p(theta > log odds) = "
+                  , tags$span(style="color:red", p2(y22)) ,"."
+                  
+      )) 
+      
+      
+    }) 
+    
+    
+      output$textWithNumber4 <- renderText({ 
+        
+        x11 <- as.numeric(input$x11)
+        x22 <- as.numeric(input$x22)
+        y11 <- as.numeric(input$y11)
+        y22 <- as.numeric(input$y22)
+        wt <-  as.numeric(input$w )
+        
+        
+        sd1 <- x11    / qnorm(1 - y11)
+        sd2 <- x22    / qnorm(1 - y22)
+        
+      HTML(paste0("The SD of the first distribution is chosen so that theta > log odds = ",  
+                  tags$span(style="color:red", p2(x11) ),
+                  " has probability p(theta > log odds) = ",
+                  tags$span(style="color:red", p2(y11)) ,
+                  " and the SD of the second distribution is chosen so that theta > log odds = " 
+                  , tags$span(style="color:red",  p2(x22)) ,
+                  " has probability p(theta > log odds) = "
+                  , tags$span(style="color:red", p2(y22)) ,
+                  "  "
+                  
+      )) 
+      
+      
+      }) 
+      
+   
+      
+      
+      
+      
+   
+    
+    
     # --------------------------------------------------------------------------
     # ---------------------------------------------------------------------------
 })
