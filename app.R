@@ -268,6 +268,9 @@ LOGISTIC AND OTHER REGRESSION MODELS"),
                                   tags$a(href = "http://hbiostat.org/doc/bayes/whybayes.pdf", "[7] Harrell, mixtures"),
                                   div(p(" ")),
                                   
+                                  tags$a(href = "http://hbiostat.org/doc/bayes/course.html", "[8] Harrell, mixtures code"),
+                                  div(p(" ")),
+                                  
                                   
                                   )
                     
@@ -284,7 +287,7 @@ LOGISTIC AND OTHER REGRESSION MODELS"),
                               
                               h4("To help understand the mixture of normals, wipe any Cauchy and Student-t entries. Enter ~N(1, 1), we shift this distribution
                                  so that the curves are not on top of one another. In the normal mixture section enter 1.95 and 0.025 for the first normal parameters.
-                                 Enter anything plausible for the second normal parameters. Now enter a weight of 1 so that the second mixture is ignored. Look at the comparison of the two curves."),  
+                                 Enter anything plausible for the second normal parameters. Now enter a weight of 1 so that the second mixture is ignored. Look at the comparison of the two curves [7,8]."),  
                               
                               
                               
